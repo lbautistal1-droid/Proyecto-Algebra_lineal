@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vectores en la Ingeniería | Universidad Mariano Gálvez</title>
+    <style>
+        :root {
+            --umg-red: #8b0000;
+            --umg-blue: #002b49;
+            --umg-gold: #d4af37;
+            --bg-dark: #0a0f1d;
+            --card-bg: #131b2e;
+            --card-border: #1e2d4a;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* VISTA 1: PANTALLA DE PRESENTACIÓN */
+        #pantalla-presentacion {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 30px 20px;
+            background: radial-gradient(circle at center, #131b2e 0%, #0a0f1d 100%);
+            text-align: center;
+        }
+
+        .cover-card {
+            background: var(--card-bg);
+            border: 2px solid var(--umg-gold);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .umg-logo-main {
+            width: 130px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+        }
+
+        .cover-header h1 {
+            color: var(--text-light);
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cover-header h2 {
+            color: var(--umg-gold);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            background: rgba(0, 43, 73, 0.4);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+        }
+
+        .meta-item strong {
+            color: var(--umg-gold);
+            display: block;
+        }
+
+        .project-title {
+            background: linear-gradient(135deg, var(--umg-red), var(--umg-blue));
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid var(--umg-gold);
+        }
+
+        .project-title h3 {
+            font-size: 1.6rem;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        .intro-box {
+            text-align: justify;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--umg-gold);
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .team-section {
+            margin-bottom: 30px;
+        }
+
+        .team-section h4 {
+            color: var(--umg-gold);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 5px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+            text-align: left;
+        }
+
+        .member-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--card-border);
+            font-size: 0.9rem;
+        }
+
+        .member-item span {
+            color: var(--umg-gold);
+            font-family: monospace;
+            float: right;
+        }
+
+        .btn-enter {
+            background: linear-gradient(135deg, #a80000, var(--umg-red));
+            color: white;
+            border: 1px solid var(--umg-gold);
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-enter:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+            background: var(--umg-gold);
+            color: var(--bg-dark);
+        }
+
+        /* VISTA 2: CONTENIDO PRINCIPAL */
+        #contenido-principal {
+            display: none;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header.main-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card-bg);
+            padding: 15px 30px;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            border-bottom: 3px solid var(--umg-gold);
+            margin-bottom: 30px;
+        }
+
+        .header-title-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 60px;
+            height: auto;
+        }
+
+        .header-title-area h1 {
+            font-size: 1.8rem;
+            color: var(--text-light);
+        }
+
+        .header-title-area p {
+            color: var(--umg-gold);
+            font-size: 0.9rem;
+        }
+
+        .btn-back {
+            background: transparent;
+            border: 1px solid var(--umg-gold);
+            color: var(--umg-gold);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-back:hover {
+            background: var(--umg-gold);
+            color: var(--bg-dark);
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .nav-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-light);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--umg-gold);
+        }
+
+        .nav-btn.active {
+            background: var(--umg-red);
+            color: white;
+            border-color: var(--umg-gold);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .card-bg-logo {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            width: 80px;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        h2 {
+            color: var(--umg-gold);
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            margin: 16px 0 8px 0;
+            color: var(--text-light);
+        }
+
+        .formula {
+            background: #070a14;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 4px solid var(--umg-gold);
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin: 10px 0;
+            overflow-x: auto;
+            color: #38bdf8;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Simulador */
+        .sim-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .sim-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        canvas {
+            background: #070a14;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            width: 100%;
+            height: 400px;
+            cursor: crosshair;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--umg-gold);
+        }
+
+        .results {
+            background: #070a14;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+        }
+
+        .results p {
+            margin-bottom: 8px;
+            font-family: monospace;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .badge-easy { background: #10b981; color: #000; }
+        .badge-med { background: #f59e0b; color: #000; }
+        .badge-hard { background: #ef4444; color: #fff; }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--card-border);
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- VISTA 1: VENTANA DE PRESENTACIÓN -->
+    <div id="pantalla-presentacion">
+        <div class="cover-card">
+            <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg/1280px-Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail" alt="Escudo Universidad Mariano Gálvez" class="umg-logo-main">
+            
+            <div class="cover-header">
+                <h1>Universidad Mariano Gálvez de Guatemala</h1>
+                <h2>Facultad de Ingeniería</h2>
+            </div>
+
+            <div class="meta-grid">
+                <div class="meta-item"><strong>Curso:</strong> ÁLGEBRA LINEAL</div>
+                <div class="meta-item"><strong>Semestre:</strong> SEGUNDO</div>
+                <div class="meta-item"><strong>Sección:</strong> A</div>
+            </div>
+
+            <div class="project-title">
+                <h3>Vectores y sus Movimientos</h3>
+            </div>
+
+            <div class="intro-box">
+                <p><strong>Introducción:</strong> Los vectores constituyen una herramienta fundamental dentro del álgebra lineal y la física matemática para describir cantidades que poseen magnitud, dirección y sentido. En el ámbito académico y profesional de la ingeniería, los movimientos vectoriales son indispensables para modelar la estática de estructuras, la dinámica de fluídos, el movimiento de brazos robóticos y los campos electromagnéticos. Esta plataforma interactiva integra las bases teóricas, aplicaciones prácticas resueltas paso a paso y un simulador en tiempo real para visualizar las operaciones y comportamiento de vectores en dos dimensiones.</p>
+            </div>
+
+            <div class="team-section">
+                <h4>Integrantes del Equipo</h4>
+                <div class="team-grid">
+                    <div class="member-item">Luis Fernando Bautista López <span>0903-26-9054</span></div>
+                    <div class="member-item">Cristian Benjamin Tobar Roblero <span>0903-26-13769</span></div>
+                    <div class="member-item">Breily Amilet González de Leon <span>0903-26-13505</span></div>
+                    <div class="member-item">Dulce Andrea Castro Bámaca <span>0903-26-22422</span></div>
+                    <div class="member-item">José Pablo Tul Escobar <span>0903-26-8337</span></div>
+                    <div class="member-item">Antony Damian Pojoy Gonzáles <span>0903-26-9759</span></div>
+                    <div class="member-item">Byron Alexander Fuentes Fuentes <span>0903-26-7628</span></div>
+                </div>
+            </div>
+
+            <button class="btn-enter" onclick="entrarAlSitio()">Explorar Contenido Principal</button>
+        </div>
+    </div>
+
+    <!-- VISTA 2: CONTENIDO PRINCIPAL Y SIMULADOR -->
+    <div id="contenido-principal">
+        <header class="main-header">
+            <div class="header-title-area">
+                <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg/1280px-Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail" alt="UMG Logo" class="header-logo">
+                <div>
+                    <h1>Vectores en la Ingeniería</h1>
+                    <p>Álgebra Lineal - Universidad Mariano Gálvez</p>
+                </div>
+            </div>
+            <button class="btn-back" onclick="volverAPresentacion()">← Volver a Carátula</button>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" data-target="teoria">1. Teoría General</button>
+            <button class="nav-btn" data-target="simulador">2. Simulador Interactivo</button>
+            <button class="nav-btn" data-target="ejemplos">3. Ejemplos Resueltos</button>
+            <button class="nav-btn" data-target="ingenieria">4. Aplicaciones en Ingeniería</button>
+        </nav>
+
+        <!-- Pestaña 1: Teoría -->
+        <div id="teoria" class="tab-content active">
+            <div class="card">
+                <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg/1280px-Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail" class="card-bg-logo" alt="UMG">
+                <h2>Fundamentos de Vectores y Movimiento</h2>
+                <p>Un vector es un segmento de recta orientado que permite representar magnitudes físicas definidas por su <strong>magnitud</strong> (longitud), <strong>dirección</strong> (orientación respecto a un eje) y <strong>sentido</strong> (hacia dónde apunta la flecha).</p>
+                
+                <h3>Componentes Rectangulares en 2D</h3>
+                <p>Todo vector <strong>A</strong> en un plano puede descomponerse en la suma de dos vectores perpendiculares sobre los ejes x e y:</p>
+                <div class="formula">A_x = |A| · cos(θ)</div>
+                <div class="formula">A_y = |A| · sin(θ)</div>
+
+                <h3>Magnitud y Dirección</h3>
+                <p>Conocidas las componentes cartecianas (A_x, A_y):</p>
+                <div class="formula">Magnitud: |A| = √(A_x² + A_y²)</div>
+                <div class="formula">Dirección: θ = arctan(A_y / A_x)</div>
+            </div>
+
+            <div class="card">
+                <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg/1280px-Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail" class="card-bg-logo" alt="UMG">
+                <h2>Operaciones Vectoriales</h2>
+                <div class="grid">
+                    <div>
+                        <h3>Suma de Vectores</h3>
+                        <p>Suma componente a componente (fuerza o desplazamiento resultante):</p>
+                        <div class="formula">R_x = A_x + B_x<br>R_y = A_y + B_y</div>
+                    </div>
+                    <div>
+                        <h3>Producto Escalar (Punto)</h3>
+                        <p>Devuelve un escalar. Se utiliza para calcular trabajo mecánico:</p>
+                        <div class="formula">A · B = A_x·B_x + A_y·B_y<br>A · B = |A||B|cos(θ)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pestaña 2: Simulador -->
+        <div id="simulador" class="tab-content">
+            <div class="card">
+                <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg/1280px-Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail" class="card-bg-logo" alt="UMG">
+                <h2>Simulador de Vectores y Movimientos en 2D</h2>
+                <div class="sim-container">
+                    <div>
+                        <canvas id="vectorCanvas"></canvas>
+                    </div>
+                    <div class="controls">
+                        <h3>Vector A (Azul)</h3>
+                        <div class="input-group">
+                            <label>Componente Ax: <span id="valAx">80</span></label>
+                            <input type="range" id="sliderAx" min="-150" max="150" value="80">
+                        </div>
+                        <div class="input-group">
+                            <label>Componente Ay: <span id="valAy">60</span></label>
+                            <input type="range" id="sliderAy" min="-150" max="150" value="60">
+                        </div>
+
+                        <h3>Vector B (Rojo)</h3>
+                        <div class="input-group">
+                            <label>Componente Bx: <span id="valBx">-50</span></label>
+                            <input type="range" id="sliderBx" min="-150" max="150" value="-50">
+                        </div>
+                        <div class="input-group">
+                            <label>Componente By: <span id="valBy">90</span></label>
+                            <input type="range" id="sliderBy" min="-150" max="150" value="90">
+                        </div>
+
+                        <div class="results">
+                            <h3 style="color:var(--umg-gold)">Resultante R = A + B (Dorado)</h3>
+                            <p>Rx = <span id="resRx">30</span></p>
+                            <p>Ry = <span id="resRy">150</span></p>
+                            <p>|R| = <span id="resMag">153.0</span></p>
+                            <p>A · B = <span id="resDot">1400</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pestaña 3: Ejemplos -->
+        <div id="ejemplos" class="tab-content">
+            <div class="card">
+                <span class="badge badge-easy">Nivel FÁCIL</span>
+                <h2>Suma Directa por Componentes</h2>
+                <p><strong>Problema:</strong> Dos fuerzas actúan sobre un mismo punto: F1 = (3, 4) N y F2 = (5, -2) N. Determinar la fuerza resultante R y su magnitud.</p>
+                <h3>Solución Paso a Paso:</h3>
+                <p>1. Sumar las componentes x e y independientemente:</p>
+                <div class="formula">R_x = 3 + 5 = 8 N</div>
+                <div class="formula">R_y = 4 + (-2) = 2 N</div>
+                <p>2. Aplicar el Teorema de Pitágoras para la magnitud:</p>
+                <div class="formula">|R| = √(8² + 2²) = √(64 + 4) = √68 ≈ 8.25 N</div>
+            </div>
+
+            <div class="card">
+                <span class="badge badge-med">Nivel MEDIO</span>
+                <h2>Descomposición de Vectores de Movimiento</h2>
+                <p><strong>Problema:</strong> Un vehículo se desplaza con un vector velocidad de magnitud v = 12 m/s a un ángulo de 135° respecto al eje positivo X. Encontrar sus componentes cartesianas.</p>
+                <h3>Solución Paso a Paso:</h3>
+                <div class="formula">v_x = 12 · cos(135°) = 12 · (-0.7071) = -8.49 m/s</div>
+                <div class="formula">v_y = 12 · sin(135°) = 12 · (0.7071) = 8.49 m/s</div>
+                <p><strong>Resultado:</strong> El vector velocidad es v = (-8.49, 8.49) m/s</p>
+            </div>
+
+            <div class="card">
+                <span class="badge badge-hard">Nivel DIFÍCIL</span>
+                <h2>Equilibrio Estático en Cargas Sostenidas</h2>
+                <p><strong>Problema:</strong> Una carga de 120 N se sostiene mediante dos cuerdas A y B fijadas al techo. La cuerda A forma un ángulo de 30° con la horizontal y la B un ángulo de 60°. Calcular la tensión en cada cuerda.</p>
+                <h3>Solución Paso a Paso:</h3>
+                <p>Se establece el sistema en equilibrio según las leyes de Newton (ΣF = 0):</p>
+                <div class="formula">ΣF_x = -Ta·cos(30°) + Tb·cos(60°) = 0</div>
+                <div class="formula">ΣF_y = Ta·sin(30°) + Tb·sin(60°) - 120 = 0</div>
+                <p>Despejando y sustituyendo en el sistema lineal:</p>
+                <div class="formula">Ta = 60 N</div>
+                <div class="formula">Tb = 103.92 N</div>
+            </div>
+        </div>
+
+        <!-- Pestaña 4: Aplicaciones -->
+        <div id="ingenieria" class="tab-content">
+            <div class="card">
+                <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg/1280px-Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail" class="card-bg-logo" alt="UMG">
+                <h2>Aplicaciones Directas en la Ingeniería</h2>
+                
+                <h3>1. Ingeniería Civil y Estructuras</h3>
+                <p>Análisis de armaduras y cerchas mediante el método de los nodos. Los vectores permiten modelar la distribución de cargas para asegurar que los elementos estructurales no excedan los límites de resistencia del material.</p>
+
+                <h3>2. Robótica y Mecatrónica</h3>
+                <p>Sistemas de coordenadas cinemáticas directas e inversas. Los vectores representan la posición, orientación y velocidad lineal/angular de cada articulación de un brazo robótico industrial.</p>
+
+                <h3>3. Sistemas de Navegación y Telecomunicaciones</h3>
+                <p>Modelado del movimiento de aeronaves frente a corrientes de viento cruzado mediante suma vectorial de velocidades para corregir trayectorias de vuelo automáticamente.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>Universidad Mariano Gálvez de Guatemala - Facultad de Ingeniería - Álgebra Lineal</p>
+        </footer>
+    </div>
+
+    <script>
+        function entrarAlSitio() {
+            document.getElementById('pantalla-presentacion').style.display = 'none';
+            document.getElementById('contenido-principal').style.display = 'block';
+            draw();
+        }
+
+        function volverAPresentacion() {
+            document.getElementById('contenido-principal').style.display = 'none';
+            document.getElementById('pantalla-presentacion').style.display = 'flex';
+        }
+
+        // Navegación por pestañas
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+
+                navButtons.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                this.classList.add('active');
+                const targetTab = document.getElementById(targetId);
+                if (targetTab) {
+                    targetTab.classList.add('active');
+                }
+                if(targetId === 'simulador') {
+                    draw();
+                }
+            });
+        });
+
+        // Lógica del Simulador Interactivo
+        const canvas = document.getElementById('vectorCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const sliderAx = document.getElementById('sliderAx');
+        const sliderAy = document.getElementById('sliderAy');
+        const sliderBx = document.getElementById('sliderBx');
+        const sliderBy = document.getElementById('sliderBy');
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = 400;
+        }
+
+        window.addEventListener('resize', () => {
+            if(document.getElementById('simulador').classList.contains('active')) {
+                resizeCanvas();
+                draw();
+            }
+        });
+
+        function drawVector(x, y, color, label) {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const targetX = centerX + x;
+            const targetY = centerY - y;
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(targetX, targetY);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Flecha
+            const angle = Math.atan2(-y, x);
+            ctx.beginPath();
+            ctx.moveTo(targetX, targetY);
+            ctx.lineTo(targetX - 10 * Math.cos(angle - Math.PI / 6), targetY - 10 * Math.sin(angle - Math.PI / 6));
+            ctx.lineTo(targetX - 10 * Math.cos(angle + Math.PI / 6), targetY - 10 * Math.sin(angle + Math.PI / 6));
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            // Etiqueta
+            ctx.font = 'bold 14px sans-serif';
+            ctx.fillText(label, targetX + 10, targetY);
+        }
+
+        function drawGrid() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            ctx.strokeStyle = '#1e2d4a';
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+            ctx.moveTo(0, centerY); ctx.lineTo(canvas.width, centerY);
+            ctx.moveTo(centerX, 0); ctx.lineTo(centerX, canvas.height);
+            ctx.stroke();
+        }
+
+        function draw() {
+            resizeCanvas();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid();
+
+            const ax = parseInt(sliderAx.value);
+            const ay = parseInt(sliderAy.value);
+            const bx = parseInt(sliderBx.value);
+            const by = parseInt(sliderBy.value);
+
+            document.getElementById('valAx').textContent = ax;
+            document.getElementById('valAy').textContent = ay;
+            document.getElementById('valBx').textContent = bx;
+            document.getElementById('valBy').textContent = by;
+
+            const rx = ax + bx;
+            const ry = ay + by;
+            const mag = Math.sqrt(rx * rx + ry * ry).toFixed(1);
+            const dot = (ax * bx) + (ay * by);
+
+            document.getElementById('resRx').textContent = rx;
+            document.getElementById('resRy').textContent = ry;
+            document.getElementById('resMag').textContent = mag;
+            document.getElementById('resDot').textContent = dot;
+
+            // Dibujar vectores con colores institucionales / destacados
+            drawVector(ax, ay, '#38bdf8', 'A'); // Azul claro
+            drawVector(bx, by, '#ef4444', 'B'); // Rojo
+            drawVector(rx, ry, '#d4af37', 'R (A+B)'); // Dorado UMG
+        }
+
+        [sliderAx, sliderAy, sliderBx, sliderBy].forEach(slider => {
+            slider.addEventListener('input', draw);
+        });
+    </script>
+</body>
+</html>
